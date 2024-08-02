@@ -80,7 +80,7 @@ class SideBarWidget extends StatelessWidget {
     return ScrollConfiguration(
         behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
         child: FutureBuilder(
-            future: DefaultAssetBundle.of(context).loadString(sideBarAsset!),
+            future: jsonDecode(sideBarAsset!),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting ||
                   !snapshot.hasData) {
