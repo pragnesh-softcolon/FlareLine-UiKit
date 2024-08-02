@@ -184,6 +184,10 @@ class SideMenuWidget extends StatelessWidget {
     if (path == routePath) {
       return;
     }
-    Navigator.of(context).pushNamed(path);
+    if(path == '/login'){
+      Navigator.of(context).pushNamedAndRemoveUntil(path, (route) => false);
+    }else {
+      Navigator.of(context).pushNamed(path);
+    }
   }
 }
