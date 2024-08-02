@@ -1,4 +1,5 @@
 library flareline_uikit;
+
 import 'package:flareline_uikit/components/badge/anim_badge.dart';
 import 'package:flareline_uikit/components/buttons/button_widget.dart';
 import 'package:flareline_uikit/components/forms/search_widget.dart';
@@ -16,7 +17,8 @@ class ToolBarWidget extends StatelessWidget {
   bool? showChangeTheme;
   final Widget? userInfoWidget;
 
-  ToolBarWidget({super.key, this.showMore, this.showChangeTheme,this.userInfoWidget});
+  ToolBarWidget(
+      {super.key, this.showMore, this.showChangeTheme, this.userInfoWidget});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,10 @@ class ToolBarWidget extends StatelessWidget {
 
   _toolsBarWidget(BuildContext context) {
     return Container(
-      color: Theme.of(context).appBarTheme.backgroundColor,
+      color: Theme
+          .of(context)
+          .appBarTheme
+          .backgroundColor,
       padding: const EdgeInsets.all(10),
       child: Row(children: [
         ResponsiveBuilder(builder: (context, sizingInformation) {
@@ -41,7 +46,9 @@ class ToolBarWidget extends StatelessWidget {
                 child: const Icon(Icons.more_vert),
               ),
               onTap: () {
-                if (Scaffold.of(context).isDrawerOpen) {
+                if (Scaffold
+                    .of(context)
+                    .isDrawerOpen) {
                   Scaffold.of(context).closeDrawer();
                   return;
                 }
@@ -66,148 +73,52 @@ class ToolBarWidget extends StatelessWidget {
           return const SizedBox();
         }),
         const Spacer(),
-        if (showChangeTheme ?? false) const ToggleWidget(),
-        const SizedBox(
-          width: 10,
-        ),
-        InkWell(
-          child: Stack(
-            alignment: Alignment.topRight,
-            children: [
-              Container(
-                  width: 34,
-                  height: 34,
-                  alignment: Alignment.center,
-                  decoration: const BoxDecoration(
-                      color: FlarelineColors.background, shape: BoxShape.circle),
-                  child: SvgPicture.asset('assets/toolbar/alarm.svg',
-                      width: 18, height: 18)),
-              const Align(
-                child: AnimBadge(),
-              )
-            ],
+        if(userInfoWidget != null)
+          InkWell(
+            child: Container(
+              child: userInfoWidget!,
+            ),
+            onTap: () async {
+              await showMenu(
+                color: Colors.white,
+                context: context,
+                position: RelativeRect.fromLTRB(MediaQuery
+                    .of(context)
+                    .size
+                    .width - 100, 80, 0, 0),
+                items: <PopupMenuItem<String>>[
+                  PopupMenuItem<String>(
+                    value: 'profile',
+                    child: Text('My Profile'),
+                  ),
+                  PopupMenuItem<String>(
+                    value: 'logout',
+                    child: Text('Log out'),
+                  ),
+                ],
+                // Handle the selected item
+              ).then((selectedValue) async {
+                if (selectedValue == 'profile') {
+                  onProfileClick(context);
+                }
+                if (selectedValue == 'logout') {
+                  await onLogoutClick(context);
+                }
+              });
+            },
           ),
-        ),
-        const SizedBox(
-          width: 10,
-        ),
-        InkWell(
-          child: Stack(
-            alignment: Alignment.topRight,
-            children: [
-              Container(
-                  width: 34,
-                  height: 34,
-                  alignment: Alignment.center,
-                  decoration: const BoxDecoration(
-                      color: FlarelineColors.background, shape: BoxShape.circle),
-                  child: SvgPicture.asset('assets/toolbar/message.svg',
-                      width: 18, height: 18)),
-              const Align(
-                child: AnimBadge(),
-              )
-            ],
-          ),
-        ),
-        const SizedBox(
-          width: 20,
-        ),
-        if(userInfoWidget!=null)
-          userInfoWidget!,
-        InkWell(
-          child: Container(
-            margin: const EdgeInsets.only(left: 6),
-            child: const Icon(Icons.arrow_drop_down),
-          ),
-          onTap: () async {
-            await showMenu(
-              color: Colors.white,
-              context: context,
-              position: RelativeRect.fromLTRB(
-                  MediaQuery.of(context).size.width - 100, 80, 0, 0),
-              items: <PopupMenuItem<String>>[
-                PopupMenuItem<String>(
-                  value: 'value01',
-                  child: Text('My Profile'),
-                  onTap: () async {
-                    onProfileClick(context);
-                  },
-                ),
-                PopupMenuItem<String>(
-                  value: 'value02',
-                  child: Text('My Contacts'),
-                  onTap: () async {
-                    onContactClick(context);
-                  },
-                ),
-                PopupMenuItem<String>(
-                  value: 'value03',
-                  child: Text('Settings'),
-                  onTap: () async {
-
-                  },
-                ),
-                PopupMenuItem<String>(
-                    enabled: false,
-                    value: 'value04',
-                    child: _languagesWidget(context)),
-                PopupMenuItem<String>(
-                  value: 'value05',
-                  child: Text('Log out'),
-                  onTap: () {
-                    onLogoutClick(context);
-                  },
-                )
-              ],
-            );
-          },
-        )
+        SizedBox(width: 10),
       ]),
     );
   }
 
-  void onProfileClick(BuildContext context){
-    Navigator.of(context).popAndPushNamed('/profile');
-  }
-
-  void onContactClick(BuildContext context){
-    Navigator.of(context).popAndPushNamed('/contacts');
-  }
-
-  void onSettingClick(BuildContext context){
-    Navigator.of(context).popAndPushNamed('/settings');
+  void onProfileClick(BuildContext context) {
+    Navigator.of(context).popAndPushNamed('/login');
   }
 
   Future<void> onLogoutClick(BuildContext context) async {
-    Navigator.of(context).popAndPushNamed('/signIn');
+    Navigator.of(context).popAndPushNamed('/login');
   }
-
-  Widget _languagesWidget(BuildContext context) {
-    return Wrap(
-      spacing: 8,
-      runSpacing: 8,
-      children: context.read<LocalizationProvider>().supportedLocales.map((e) {
-        return SizedBox(
-          width: 50,
-          height: 20,
-          child:
-              Consumer<LocalizationProvider>(builder: (ctx, provider, child) {
-            return ButtonWidget(
-              btnText: e.languageCode,
-              type: e.languageCode == provider.languageCode
-                  ? ButtonType.primary.type
-                  : null,
-              onTap: () {
-                context.read<LocalizationProvider>().locale = e;
-              },
-            );
-          }),
-        );
-      }).toList(),
-    );
-  }
-
-
 }
 
 class ToggleWidget extends StatelessWidget {
@@ -217,11 +128,13 @@ class ToggleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isDark = context.watch<ThemeProvider>().isDark;
+    bool isDark = context
+        .watch<ThemeProvider>()
+        .isDark;
     return InkWell(
       child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 2,horizontal: 3),
-     
+          padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 3),
+
           decoration: BoxDecoration(
               color: FlarelineColors.background,
               borderRadius: BorderRadius.circular(45)),
@@ -239,7 +152,7 @@ class ToggleWidget extends StatelessWidget {
                         : FlarelineColors.primary),
               ),
               CircleAvatar(
-                 radius: 15,
+                radius: 15,
                 backgroundColor: isDark ? Colors.white : Colors.transparent,
                 child: SvgPicture.asset('assets/toolbar/moon.svg',
                     width: 18,
