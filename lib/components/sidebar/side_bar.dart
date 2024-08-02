@@ -31,7 +31,6 @@ class SideBarWidget extends StatelessWidget {
     this.footerWidget,
     this.logoFontSize=30,
     this.isDark});
-
   @override
   Widget build(BuildContext context) {
     bool isDarkTheme = isDark ?? false;
@@ -77,27 +76,22 @@ class SideBarWidget extends StatelessWidget {
     if (sideBarAsset == null) {
       return const SizedBox.shrink();
     }
-    return ScrollConfiguration(
-        behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
-        child: FutureBuilder(
-            future: jsonDecode(sideBarAsset!),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting ||
-                  !snapshot.hasData) {
-                return const SizedBox.shrink();
-              }
+    // Decode the JSON synchronously
+    List<dynamic> listMenu = jsonDecode(sideBarAsset!);
 
-              // Decode the JSON
-              List listMenu = json.decode(snapshot.data.toString());
-              return ListView.separated(
-                  padding: const EdgeInsets.only(left: 20, right: 10),
-                  itemBuilder: (ctx, index) {
-                    return itemBuilder(ctx, index, listMenu, isDark);
-                  },
-                  separatorBuilder: separatorBuilder,
-                  itemCount: listMenu.length);
-            }));
+    return ScrollConfiguration(
+      behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
+      child: ListView.separated(
+        padding: const EdgeInsets.only(left: 20, right: 10),
+        itemBuilder: (ctx, index) {
+          return itemBuilder(ctx, index, listMenu, isDark);
+        },
+        separatorBuilder: separatorBuilder,
+        itemCount: listMenu.length,
+      ),
+    );
   }
+
 
   Widget itemBuilder(BuildContext context, int index, List listMenu,
       bool isDark) {
