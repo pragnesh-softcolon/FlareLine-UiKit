@@ -157,6 +157,23 @@ class SideMenuWidget extends StatelessWidget {
             : Colors.transparent,
         child: Row(
           children: [
+            if (e['icon'] != null)
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 10),
+                child:e['icon'].toString().contains("svg")? SvgPicture.asset(
+                  e['icon'],
+                  width: 18,
+                  height: 18,
+                  color:
+                  isDark ? Colors.white : FlarelineColors.darkBlackText,
+                ): Image.asset(
+                  e['icon'],
+                  width: 18,
+                  height: 18,
+                  color:
+                  isDark ? Colors.white : FlarelineColors.darkBlackText,
+                ),
+              ),
             Expanded(
                 child: Text(
                   itemMenuName,

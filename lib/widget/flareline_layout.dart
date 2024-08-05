@@ -173,7 +173,7 @@ abstract class FlarelineLayoutWidget extends StatelessWidget {
               context,
               showDrawer,
             ) ??
-            SizedBox.shrink(),
+            const SizedBox.shrink(),
       if (showToolBar)
         const SizedBox(
           height: 16,

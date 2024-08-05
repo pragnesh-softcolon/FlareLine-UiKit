@@ -73,7 +73,7 @@ abstract class TableWidget<S extends BaseTableProvider>
       return const LoadingWidget();
     }
 
-    List<List<TableDataRowsTableDataRows>> rows = tableDataEntity?.rows ?? [];
+    List<List<TableDataRowsTableDataRows>> rows = tableDataEntity.rows ?? [];
     return ConstrainedBox(
         constraints: const BoxConstraints(minWidth: double.infinity),
         child: _sfDataGrid(context, headers, rows, viewModel));
@@ -156,12 +156,18 @@ abstract class TableWidget<S extends BaseTableProvider>
       highlightRowOnHover: highlightRowOnHover,
       showCheckboxColumn: showCheckboxColumn,
       gridLinesVisibility: GridLinesVisibility.horizontal,
-      selectionMode: SelectionMode.multiple,
+      selectionMode: SelectionMode.single,
       checkboxColumnSettings: DataGridCheckboxColumnSettings(width: 80),
       footerFrozenColumnsCount: isLastColumnFixed ? 1 : 0,
       isScrollbarAlwaysShown: true,
       columnWidthMode: columnWidthMode,
       columns: headers.map((e) => gridColumnWidget(e, isMobile)).toList(),
+      onCellTap: (args) {
+        String id = dataGridSource.rows[args.rowColumnIndex.rowIndex - 1]
+            .getCells()[0]
+            .value
+            .text;
+      },
     );
   }
 
