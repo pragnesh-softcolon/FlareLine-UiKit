@@ -15,10 +15,15 @@ import 'package:responsive_builder/responsive_builder.dart';
 class ToolBarWidget extends StatelessWidget {
   bool? showMore;
   bool? showChangeTheme;
+  bool showSearch = false;
   final Widget? userInfoWidget;
 
   ToolBarWidget(
-      {super.key, this.showMore, this.showChangeTheme, this.userInfoWidget});
+      {super.key,
+      this.showMore,
+      this.showChangeTheme,
+      required this.showSearch,
+      this.userInfoWidget});
 
   @override
   Widget build(BuildContext context) {
@@ -27,10 +32,7 @@ class ToolBarWidget extends StatelessWidget {
 
   _toolsBarWidget(BuildContext context) {
     return Container(
-      color: Theme
-          .of(context)
-          .appBarTheme
-          .backgroundColor,
+      color: Theme.of(context).appBarTheme.backgroundColor,
       padding: const EdgeInsets.all(10),
       child: Row(children: [
         ResponsiveBuilder(builder: (context, sizingInformation) {
@@ -46,9 +48,7 @@ class ToolBarWidget extends StatelessWidget {
                 child: const Icon(Icons.more_vert),
               ),
               onTap: () {
-                if (Scaffold
-                    .of(context)
-                    .isDrawerOpen) {
+                if (Scaffold.of(context).isDrawerOpen) {
                   Scaffold.of(context).closeDrawer();
                   return;
                 }
@@ -59,21 +59,24 @@ class ToolBarWidget extends StatelessWidget {
 
           return const SizedBox();
         }),
-        ResponsiveBuilder(builder: (context, sizingInformation) {
-          // Check the sizing information here and return your UI
-          if (!(showMore ?? false) &&
-              sizingInformation.deviceScreenType == DeviceScreenType.desktop) {
-            return Container(
-              margin: const EdgeInsets.only(left: 10),
-              width: 280,
-              child: SearchWidget(),
-            );
-          }
+        showSearch
+            ? ResponsiveBuilder(builder: (context, sizingInformation) {
+                // Check the sizing information here and return your UI
+                if (!(showMore ?? false) &&
+                    sizingInformation.deviceScreenType ==
+                        DeviceScreenType.desktop) {
+                  return Container(
+                    margin: const EdgeInsets.only(left: 10),
+                    width: 280,
+                    child: const SearchWidget(),
+                  );
+                }
 
-          return const SizedBox();
-        }),
+                return const SizedBox();
+              })
+            : const SizedBox(),
         const Spacer(),
-        if(userInfoWidget != null)
+        if (userInfoWidget != null)
           InkWell(
             child: Container(
               child: userInfoWidget!,
@@ -82,14 +85,15 @@ class ToolBarWidget extends StatelessWidget {
               await showMenu(
                 color: Colors.white,
                 context: context,
-                position: RelativeRect.fromLTRB(MediaQuery
-                    .of(context)
-                    .size
-                    .width - 100, 80, 0, 0),
+                position: RelativeRect.fromLTRB(
+                    MediaQuery.of(context).size.width - 100, 80, 0, 0),
                 items: <PopupMenuItem<String>>[
                   PopupMenuItem<String>(
                     value: 'profile',
                     child: Text('My Profile'),
+                    onTap: () {
+                      onProfileClick(context);
+                    },
                   ),
                   PopupMenuItem<String>(
                     value: 'logout',
@@ -113,7 +117,7 @@ class ToolBarWidget extends StatelessWidget {
   }
 
   void onProfileClick(BuildContext context) {
-    Navigator.of(context).popAndPushNamed('/login');
+    Navigator.of(context).popAndPushNamed('/profile');
   }
 
   Future<void> onLogoutClick(BuildContext context) async {
@@ -128,13 +132,10 @@ class ToggleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isDark = context
-        .watch<ThemeProvider>()
-        .isDark;
+    bool isDark = context.watch<ThemeProvider>().isDark;
     return InkWell(
       child: Container(
           padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 3),
-
           decoration: BoxDecoration(
               color: FlarelineColors.background,
               borderRadius: BorderRadius.circular(45)),
