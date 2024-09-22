@@ -103,7 +103,7 @@ class ToolBarWidget extends StatelessWidget {
                 // Handle the selected item
               ).then((selectedValue) async {
                 if (selectedValue == 'profile') {
-                  await  onProfileClick(context);
+                  onProfileClick(context);
                 }
                 if (selectedValue == 'logout') {
                   await onLogoutClick(context);
@@ -116,8 +116,8 @@ class ToolBarWidget extends StatelessWidget {
     );
   }
 
-  Future<void> onProfileClick(BuildContext context) async {
-    Navigator.of(context).pushNamed('/profile');
+  void onProfileClick(BuildContext context) {
+
   }
 
   Future<void> onLogoutClick(BuildContext context) async {
