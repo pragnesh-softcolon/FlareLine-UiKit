@@ -79,6 +79,7 @@ class OutBorderTextFormField extends StatelessWidget {
                         maxHeight: 35,
                       ),
                       labelText: labelText,
+                      label: Text(labelText!),
                       border: const OutlineInputBorder(
                           borderSide: BorderSide(
                               color: FlarelineColors.border, width: 1)),
