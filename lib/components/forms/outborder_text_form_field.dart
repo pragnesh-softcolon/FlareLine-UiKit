@@ -73,30 +73,31 @@ class OutBorderTextFormField extends StatelessWidget {
                   onFieldSubmitted: onFieldSubmitted,
                   style: textStyle,
                   decoration: InputDecoration(
-                      prefixIcon: icon,
-                      prefixIconConstraints: const BoxConstraints(
-                        maxWidth: 35,
-                        maxHeight: 35,
-                      ),
-                      labelText: '',
-                      label: Text(labelText!),
-                      border: const OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: FlarelineColors.border, width: 1)),
-                      enabledBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: FlarelineColors.border, width: 1)),
-                      focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: (focusColor ?? FlarelineColors.primary),
-                              width: 1)),
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 6,
-                      ),
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                      hintText: hintText,
-                      hintStyle: hintStyle),
+                    prefixIcon: icon,
+                    prefixIconConstraints: const BoxConstraints(
+                      maxWidth: 35,
+                      maxHeight: 35,
+                    ),
+                    // labelText: '',
+                    labelText: hintText,
+                    border: const OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: FlarelineColors.border, width: 1)),
+                    enabledBorder: const OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: FlarelineColors.border, width: 1)),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: (focusColor ?? FlarelineColors.primary),
+                            width: 1)),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 6,
+                    ),
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                    // hintText: hintText,
+                    // hintStyle: hintStyle,
+                  ),
                 ),
               ),
               if (suffixWidget != null)
