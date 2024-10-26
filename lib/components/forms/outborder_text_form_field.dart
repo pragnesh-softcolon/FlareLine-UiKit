@@ -1,4 +1,5 @@
 library flareline_uikit;
+
 import 'package:flareline_uikit/core/theme/flareline_colors.dart';
 import 'package:flutter/material.dart';
 
@@ -44,7 +45,11 @@ class OutBorderTextFormField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (labelText != null) Text(labelText ?? '',style: TextStyle(fontSize: 14),),
+        if (labelText != null)
+          Text(
+            labelText ?? '',
+            style: TextStyle(fontSize: 14),
+          ),
         if (labelText != null)
           const SizedBox(
             height: 8,
@@ -68,30 +73,29 @@ class OutBorderTextFormField extends StatelessWidget {
                   onFieldSubmitted: onFieldSubmitted,
                   style: textStyle,
                   decoration: InputDecoration(
-                    prefixIcon: icon,
-                    prefixIconConstraints: const BoxConstraints(
-                      maxWidth: 35,
-                      maxHeight: 35,
-                    ),
-                    labelText: '',
-                    border: const OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: FlarelineColors.border, width: 1)),
-                    enabledBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: FlarelineColors.border, width: 1)),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: (focusColor ?? FlarelineColors.primary),
-                            width: 1)),
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 6,
-                    ),
-                    floatingLabelBehavior: FloatingLabelBehavior.always,
-                    hintText: hintText,
-                    hintStyle: hintStyle
-                  ),
+                      prefixIcon: icon,
+                      prefixIconConstraints: const BoxConstraints(
+                        maxWidth: 35,
+                        maxHeight: 35,
+                      ),
+                      labelText: labelText,
+                      border: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: FlarelineColors.border, width: 1)),
+                      enabledBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: FlarelineColors.border, width: 1)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: (focusColor ?? FlarelineColors.primary),
+                              width: 1)),
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 6,
+                      ),
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                      hintText: hintText,
+                      hintStyle: hintStyle),
                 ),
               ),
               if (suffixWidget != null)
